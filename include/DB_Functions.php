@@ -26,30 +26,31 @@ class DB_Functions {
         
     }
 
-	public function getFriends($system_id)
+	public function getAppartment($type_id)
 	{
-		$events = null;
+		$appartment = null;
 		
-		$query = "SELECT id, systems_id, burguard_users_id FROM burguard_trustees WHERE systems_id = '$system_id'";
+		$query = "SELECT id, type_id, measurements, description, floors FROM tnv_appartments WHERE type_id = '$type_id'";
 
         $result = $this->conn->query($query);
 
+     //   var_dump($this->conn);
+
         if ($result->num_rows > 0) 
 		{
-			$count = 0;
-			
 			// output data of each row
 			while($row = $result->fetch_assoc()) 
 			{
-				$events[$count]["id"] = $row['id'];
-				$events[$count]["systems_id"] = $row['systems_id'];
-				$events[$count]["burguard_users_id"] = $row['burguard_users_id'];
-				$count++;
+                $appartment["id"] = $row['id'];
+                $appartment["type_id"] = $row['type_id'];
+                $appartment["measurements"] = $row['measurements'];
+                $appartment["description"] = $row['description'];
+                $appartment["floors"] = $row['floors'];
 			}
 			
 			$this->conn->close();
 			
-			return $events;
+			return $appartment;
 		}
 		else
 		{
@@ -85,28 +86,6 @@ class DB_Functions {
 		else
 		{
 			return NULL;
-		}
-	}
-
-	public function addFriend($alarm_id, $username)
-	{
-		$sql = "INSERT INTO `burguard_trustees` (`systems_id`, `burguard_users_id`) VALUES ('$alarm_id', '$username')";
-
-		if ($this->conn->query($sql) === TRUE) {
-			echo "New record created successfully";
-		} else {
-			echo "Error: " . $sql . "<br>" . $conn->error;
-		}
-	}
-	
-	public function triggerEvent($alarm_id)
-	{
-		$sql = "INSERT INTO `burguard_events` (`alarm_id`, `timestamp`) VALUES ('$alarm_id', now());";
-
-		if ($this->conn->query($sql) === TRUE) {
-			echo "New record created successfully";
-		} else {
-			echo "Error: " . $sql . "<br>" . $conn->error;
 		}
 	}
 	

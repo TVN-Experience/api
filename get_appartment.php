@@ -5,13 +5,13 @@ $db = new DB_Functions();
 // json response array
 $response = array("error" => FALSE);
 
-if (isset($_POST['alarm_id'])) {
+if (isset($_POST['type_id'])) {
 
     // receiving the post params
-    $id = $_POST['alarm_id'];
+    $id = $_POST['type_id'];
 
     // get the user by email and password
-    $data = $db->getEvents($id);
+    $data = $db->getAppartment($id);
 
     if ($data != false) {
         // use is found
@@ -21,7 +21,7 @@ if (isset($_POST['alarm_id'])) {
 else {
     // required post params is missing
     $response["error"] = TRUE;
-    $response["error_msg"] = "No events found";
+    $response["error_msg"] = "No appartment found";
     echo json_encode($response);
 }
 ?>
