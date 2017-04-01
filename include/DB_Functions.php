@@ -30,7 +30,7 @@ class DB_Functions {
 	{
 		$appartment = null;
 		
-		$query = "SELECT id, type_id, measurements, description, floors FROM tnv_appartments WHERE type_id = '$type_id'";
+		$query = "SELECT id, type_id, measurements, description, floors FROM tvn_apartments WHERE type_id = '$type_id'";
 
         $result = $this->conn->query($query);
 
