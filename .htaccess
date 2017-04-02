@@ -6,6 +6,10 @@
  RewriteRule ^types$                        get_types.php
  RewriteRule ^types/([0-9]+)$               get_type.php?type_id=$1
  RewriteRule ^types/([0-9]+)/$              get_type.php?type_id=$1
+ RewriteRule ^beacons/$                     get_beacons.php
+ RewriteRule ^beacons$                      get_beacons.php
+ RewriteRule ^beacons/([0-9]+)$             get_beacon.php?id=$1
+ RewriteRule ^beacons/([0-9]+)/$            get_beacon.php?id=$1
  RewriteRule ^apartments$                   get_apartments.php
  RewriteRule ^apartments/$                  get_apartments.php
  RewriteRule ^apartments/type/([0-9]+)$     get_apartments_by_type.php?type_id=$1

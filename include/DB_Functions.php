@@ -97,6 +97,76 @@ class DB_Functions {
         }
     }
 
+    public function addBeacon($id, $apartment_id, $description)
+    {
+        $sql = "INSERT INTO `tvn_apartments` (`id`, `apartment_id`, `description`) VALUES ($id, '$apartment_id', '$description')";
+
+        if ($this->conn->query($sql) === TRUE) {
+            echo "New record created successfully";
+        } else {
+            echo "Error: " . $sql . "<br>" . $this->conn->error;
+        }
+    }
+
+    public function getBeacons()
+	{
+        $beacon = null;
+
+        $query = "SELECT id, apartment_id, description FROM tvn_beacons";
+
+        $result = $this->conn->query($query);
+
+        if ($result->num_rows > 0)
+        {
+            $count = 0;
+            // output data of each row
+            while($row = $result->fetch_assoc())
+            {
+                $beacon[$count]["id"] = $row['id'];
+                $beacon[$count]["apartment_id"] = $row['apartment_id'];
+                $beacon[$count]["description"] = $row['description'];
+                $count++;
+            }
+
+            $this->conn->close();
+            return $beacon;
+        }
+        else
+        {
+            return NULL;
+        }
+	}
+
+	public function getBeaconByID($id)
+	{
+        $beacon = null;
+
+        $query = "SELECT id, apartment_id, description FROM tvn_beacons WHERE id = '$id'";
+
+        $result = $this->conn->query($query);
+//var_dump($this->conn);
+
+
+        if ($result->num_rows > 0)
+        {
+
+            // output data of each row
+            while($row = $result->fetch_assoc())
+            {
+                $beacon[0]["id"] = $row['id'];
+                $beacon[0]["apartment_id"] = $row['apartment_id'];
+                $beacon[0]["description"] = $row['description'];
+            }
+
+            $this->conn->close();
+            return $beacon;
+        }
+        else
+        {
+            return NULL;
+        }
+	}
+
     public function getApartment($id)
     {
         $apartment = null;
@@ -120,7 +190,6 @@ class DB_Functions {
             }
 
             $this->conn->close();
-
             return $apartment;
         }
         else
