@@ -11,7 +11,7 @@ if (isset($_GET['type_id'])) {
     $id = $_GET['type_id'];
 
     // get the user by email and password
-    $data = $db->getAppartmentsByType($id);
+    $data = $db->getApartmentsByType($id);
 
     if ($data != false) {
         // use is found

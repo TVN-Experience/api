@@ -11,7 +11,7 @@ if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
     // get the user by email and password
-    $data = $db->getAppartment($id);
+    $data = $db->getApartment($id);
 
     if ($data != false) {
         // use is found

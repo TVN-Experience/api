@@ -97,11 +97,11 @@ class DB_Functions {
         }
     }
 
-    public function getAppartment($id)
+    public function getApartment($id)
     {
-        $appartment = null;
+        $apartment = null;
 
-        $query = "SELECT id, type_id, measurements, description, floors FROM tvn_apartments WHERE id = '$id'";
+        $query = "SELECT id, type_id, measurements, description, floors, price FROM tvn_apartments WHERE id = '$id'";
 
         $result = $this->conn->query($query);
 
@@ -111,16 +111,17 @@ class DB_Functions {
             // output data of each row
             while($row = $result->fetch_assoc())
             {
-                $appartment[0]["id"] = $row['id'];
-                $appartment[0]["type_id"] = $row['type_id'];
-                $appartment[0]["measurements"] = $row['measurements'];
-                $appartment[0]["description"] = $row['description'];
-                $appartment[0]["floors"] = $row['floors'];
+                $apartment[0]["id"] = $row['id'];
+                $apartment[0]["type_id"] = $row['type_id'];
+                $apartment[0]["measurements"] = $row['measurements'];
+                $apartment[0]["description"] = $row['description'];
+                $apartment[0]["floors"] = $row['floors'];
+                $apartment[0]["price"] = $row['price'];
             }
 
             $this->conn->close();
 
-            return $appartment;
+            return $apartment;
         }
         else
         {
@@ -128,11 +129,11 @@ class DB_Functions {
         }
     }
 
-    public function getAppartments()
+    public function getApartments()
     {
-        $appartment = null;
+        $apartment = null;
 
-        $query = "SELECT id, type_id, measurements, description, floors FROM tvn_apartments";
+        $query = "SELECT id, type_id, measurements, description, floors, price FROM tvn_apartments";
 
         $result = $this->conn->query($query);
 
@@ -142,17 +143,18 @@ class DB_Functions {
             // output data of each row
             while($row = $result->fetch_assoc())
             {
-                $appartment[$count]["id"] = $row['id'];
-                $appartment[$count]["type_id"] = $row['type_id'];
-                $appartment[$count]["measurements"] = $row['measurements'];
-                $appartment[$count]["description"] = $row['description'];
-                $appartment[$count]["floors"] = $row['floors'];
+                $apartment[$count]["id"] = $row['id'];
+                $apartment[$count]["type_id"] = $row['type_id'];
+                $apartment[$count]["measurements"] = $row['measurements'];
+                $apartment[$count]["description"] = $row['description'];
+                $apartment[$count]["floors"] = $row['floors'];
+                $apartment[$count]["price"] = $row['price'];
                 $count++;
             }
 
             $this->conn->close();
 
-            return $appartment;
+            return $apartment;
         }
         else
         {
@@ -160,11 +162,11 @@ class DB_Functions {
         }
     }
 
-    public function getAppartmentsByType($type_id)
+    public function getApartmentsByType($type_id)
 	{
-		$appartment = null;
+		$apartment = null;
 
-		$query = "SELECT id, type_id, measurements, description, floors FROM tvn_apartments WHERE type_id = '$type_id'";
+		$query = "SELECT id, type_id, measurements, description, floors, price FROM tvn_apartments WHERE type_id = '$type_id'";
 
         $result = $this->conn->query($query);
 
@@ -174,17 +176,18 @@ class DB_Functions {
 			// output data of each row
 			while($row = $result->fetch_assoc())
 			{
-                $appartment[$count]["id"] = $row['id'];
-                $appartment[$count]["type_id"] = $row['type_id'];
-                $appartment[$count]["measurements"] = $row['measurements'];
-                $appartment[$count]["description"] = $row['description'];
-                $appartment[$count]["floors"] = $row['floors'];
+                $apartment[$count]["id"] = $row['id'];
+                $apartment[$count]["type_id"] = $row['type_id'];
+                $apartment[$count]["measurements"] = $row['measurements'];
+                $apartment[$count]["description"] = $row['description'];
+                $apartment[$count]["floors"] = $row['floors'];
+                $apartment[$count]["price"] = $row['price'];
                 $count++;
 			}
 
 			$this->conn->close();
 
-			return $appartment;
+			return $apartment;
 		}
 		else
 		{

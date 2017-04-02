@@ -6,7 +6,7 @@ $db = new DB_Functions();
 $response = array("error" => FALSE);
 
 // get the user by email and password
-$data = $db->getAppartments();
+$data = $db->getApartments();
 
 if ($data != false) {
     // use is found
