@@ -97,9 +97,20 @@ class DB_Functions {
         }
     }
 
-    public function addBeacon($id, $apartment_id, $description)
+    public function addBeacon($apartment_id, $description)
     {
-        $sql = "INSERT INTO `tvn_apartments` (`id`, `apartment_id`, `description`) VALUES ($id, '$apartment_id', '$description')";
+        $sql = "INSERT INTO `tvn_apartments` (`apartment_id`, `description`) VALUES ('$apartment_id', '$description')";
+
+        if ($this->conn->query($sql) === TRUE) {
+            echo "New record created successfully";
+        } else {
+            echo "Error: " . $sql . "<br>" . $this->conn->error;
+        }
+    }
+
+    public function addImage($uri)
+    {
+        $sql = "INSERT INTO `tvn_apartments` (`uri`) VALUES ('$uri')";
 
         if ($this->conn->query($sql) === TRUE) {
             echo "New record created successfully";
@@ -144,8 +155,6 @@ class DB_Functions {
         $query = "SELECT id, apartment_id, description FROM tvn_beacons WHERE id = '$id'";
 
         $result = $this->conn->query($query);
-//var_dump($this->conn);
-
 
         if ($result->num_rows > 0)
         {
@@ -166,6 +175,62 @@ class DB_Functions {
             return NULL;
         }
 	}
+
+    public function getImagesByApartment($id)
+    {
+        $images = null;
+
+        $query = "SELECT uri FROM tvn_images JOIN tvn_images_apartments ON tvn_images.id = tvn_images_apartments.images_id WHERE apartments_id  = '$id'";
+
+        $result = $this->conn->query($query);
+
+        if ($result->num_rows > 0)
+        {
+            // output data of each row
+            $count = 0;
+
+            while($row = $result->fetch_assoc())
+            {
+                $images[$count]["uri"] = $row['uri'];
+                $count++;
+            }
+
+            $this->conn->close();
+            return $images;
+        }
+        else
+        {
+            return NULL;
+        }
+    }
+
+    public function getImages()
+    {
+        $beacon = null;
+
+        $query = "SELECT id, uri FROM tvn_images";
+
+        $result = $this->conn->query($query);
+
+        if ($result->num_rows > 0)
+        {
+            $count = 0;
+            // output data of each row
+            while($row = $result->fetch_assoc())
+            {
+                $beacon[$count]["id"] = $row['id'];
+                $beacon[$count]["uri"] = $row['uri'];
+                $count++;
+            }
+
+            $this->conn->close();
+            return $beacon;
+        }
+        else
+        {
+            return NULL;
+        }
+    }
 
     public function getApartment($id)
     {
