@@ -119,6 +119,17 @@ class DB_Functions {
         }
     }
 
+    public function addTracking($beacon_id, $start_time, $end_time, $mac_address)
+    {
+        $sql = "INSERT INTO `tvn_tracking` (`beacon_id`, `start_time`, `end_time`, `mac_address`) VALUES ('$beacon_id', '$start_time', '$end_time', '$mac_address')";
+
+        if ($this->conn->query($sql) === TRUE) {
+            echo "New record created successfully";
+        } else {
+            echo "Error: " . $sql . "<br>" . $this->conn->error;
+        }
+    }
+
     public function getBeacons()
 	{
         $beacon = null;
@@ -147,6 +158,8 @@ class DB_Functions {
             return NULL;
         }
 	}
+
+
 
     public function getTrackings()
     {

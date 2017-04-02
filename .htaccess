@@ -32,5 +32,7 @@
  RewriteRule ^beacons                       add_beacon.php
  RewriteRule ^images/                       add_image.php
  RewriteRule ^images                        add_image.php
+ RewriteRule ^tracking/                     add_tracking.php
+ RewriteRule ^tracking                      add_tracking.php
 
 </IfModule>
