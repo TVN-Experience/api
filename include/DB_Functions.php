@@ -26,6 +26,8 @@ class DB_Functions {
         
     }
 
+
+
     public function getType($type_id)
     {
     	$type = null;
@@ -85,6 +87,16 @@ class DB_Functions {
         }
     }
 
+    public function addType($type, $description)
+    {
+        $sql = "INSERT INTO `tvn_types` (`type`, `description`) VALUES ('$type', '$description')";
+
+        if ($this->conn->query($sql) === TRUE) {
+            echo "New record created successfully";
+        } else {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
+    }
 
     public function getAppartment($type_id)
 	{
@@ -93,8 +105,6 @@ class DB_Functions {
 		$query = "SELECT id, type_id, measurements, description, floors FROM tvn_apartments WHERE type_id = '$type_id'";
 
         $result = $this->conn->query($query);
-
-     //   var_dump($this->conn);
 
         if ($result->num_rows > 0) 
 		{

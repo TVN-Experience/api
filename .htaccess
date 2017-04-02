@@ -6,5 +6,7 @@
  RewriteRule ^types$                    get_types.php
  RewriteRule ^types/([0-9]+)$           get_type.php?type_id=$1
  RewriteRule ^types/([0-9]+)/$          get_type.php?type_id=$1
+ RewriteRule ^types/add/                add_type.php
+ RewriteRule ^types/add                 add_type.php
 
 </IfModule>
