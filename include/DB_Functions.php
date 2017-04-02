@@ -148,6 +148,37 @@ class DB_Functions {
         }
 	}
 
+    public function getTrackings()
+    {
+        $beacon = null;
+
+        $query = "SELECT id, beacon_id, start_time, end_time, mac_address FROM tvn_tracking";
+
+        $result = $this->conn->query($query);
+
+        if ($result->num_rows > 0)
+        {
+            $count = 0;
+            // output data of each row
+            while($row = $result->fetch_assoc())
+            {
+                $beacon[$count]["id"] = $row['id'];
+                $beacon[$count]["beacon_id"] = $row['beacon_id'];
+                $beacon[$count]["start_time"] = $row['start_time'];
+                $beacon[$count]["end_time"] = $row['end_time'];
+                $beacon[$count]["mac_address"] = $row['mac_address'];
+                $count++;
+            }
+
+            $this->conn->close();
+            return $beacon;
+        }
+        else
+        {
+            return NULL;
+        }
+    }
+
 	public function getBeaconByID($id)
 	{
         $beacon = null;
