@@ -5,10 +5,10 @@ $db = new DB_Functions();
 // json response array
 $response = array("error" => FALSE);
 
-if (isset($_POST['type_id'])) {
+if (isset($_GET['type_id'])) {
 
     // receiving the post params
-    $id = $_POST['type_id'];
+    $id = $_GET['type_id'];
 
     // get the user by email and password
     $data = $db->getAppartment($id);

@@ -34,8 +34,6 @@ class DB_Functions {
 
         $result = $this->conn->query($query);
 
-        //var_dump($this->conn);
-
         if ($result->num_rows > 0)
         {
             // output data of each row
@@ -63,8 +61,6 @@ class DB_Functions {
         $query = "SELECT id, type, description FROM tvn_types";
 
         $result = $this->conn->query($query);
-
-        //var_dump($this->conn);
 
         if ($result->num_rows > 0)
         {
