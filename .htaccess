@@ -1,7 +1,10 @@
 <IfModule mod_rewrite.c>
  RewriteEngine on
 
- RewriteRule ^appartment/([0-9]+)$ get_appartment.php?id=$1
- RewriteRule ^appartment/([0-9]+)/$ get_appartment.php?id=$1
+ RewriteRule ^apartment/([0-9]+)$       get_appartment.php?type_id=$1
+ RewriteRule ^types/$                   get_types.php
+ RewriteRule ^types$                    get_types.php
+ RewriteRule ^types/([0-9]+)$           get_type.php?type_id=$1
+ RewriteRule ^types/([0-9]+)/$          get_type.php?type_id=$1
 
 </IfModule>

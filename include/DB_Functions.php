@@ -26,7 +26,71 @@ class DB_Functions {
         
     }
 
-	public function getAppartment($type_id)
+    public function getType($type_id)
+    {
+    	$type = null;
+
+        $query = "SELECT id, type, description FROM tvn_types WHERE id = '$type_id'";
+
+        $result = $this->conn->query($query);
+
+        //var_dump($this->conn);
+
+        if ($result->num_rows > 0)
+        {
+            // output data of each row
+            while($row = $result->fetch_assoc())
+            {
+                $type["id"] = $row['id'];
+                $type["type"] = $row['type'];
+                $type["description"] = $row['description'];
+            }
+
+            $this->conn->close();
+
+            return $type;
+        }
+        else
+        {
+            return NULL;
+        }
+    }
+
+    public function getTypes()
+    {
+        $types = null;
+
+        $query = "SELECT id, type, description FROM tvn_types";
+
+        $result = $this->conn->query($query);
+
+        //var_dump($this->conn);
+
+        if ($result->num_rows > 0)
+        {
+            $count = 0;
+
+            // output data of each row
+            while($row = $result->fetch_assoc())
+            {
+                $types[$count]["id"] = $row['id'];
+                $types[$count]["type"] = $row['type'];
+                $types[$count]["description"] = $row['description'];
+                $count++;
+            }
+
+            $this->conn->close();
+
+            return $types;
+        }
+        else
+        {
+            return NULL;
+        }
+    }
+
+
+    public function getAppartment($type_id)
 	{
 		$appartment = null;
 		
@@ -94,13 +158,12 @@ class DB_Functions {
      * returns user details
      */
     public function storeUser($name, $email, $password) {
-        $uuid = uniqid('', true);
         $hash = $this->hashSSHA($password);
         $encrypted_password = $hash["encrypted"]; // encrypted password
         $salt = $hash["salt"]; // salt
 
-        $stmt = $this->conn->prepare("INSERT INTO burguard_users(unique_id, name, email, encrypted_password, salt, created_at) VALUES(?, ?, ?, ?, ?, NOW())");
-        $stmt->bind_param("sssss", $uuid, $name, $email, $encrypted_password, $salt);
+        $stmt = $this->conn->prepare("INSERT INTO tvn_users(username, password, salt) VALUES(?, ?, ?)");
+        $stmt->bind_param("sssss", $email, $encrypted_password, $salt);
         $result = $stmt->execute();
         $stmt->close();
 
@@ -108,19 +171,15 @@ class DB_Functions {
         if ($result) 
 		{
 			$user = "";
-					
-            $stmt = $this->conn->prepare("SELECT unique_id, name, email, encrypted_password, salt, created_at, updated_at FROM burguard_users WHERE email = ?");
+            $stmt = $this->conn->prepare("SELECT username, password, salt FROM tvn_users WHERE username = ?");
 			$stmt->bind_param("s", $email);
 			$stmt->execute();
-			$stmt->bind_result($uuid, $name, $email, $password, $salt, $createdate, $updatedate);
+			$stmt->bind_result($email, $password, $salt);
 
 			while($stmt->fetch())
 			{
 				$user["name"] = $name;
 				$user["email"] = $email;
-				$user["unique_id"] = $uuid;
-				$user["created_at"] = $createdate;
-				$user["updated_at"] = $updatedate;
 			}
 			
 			$stmt->close();
