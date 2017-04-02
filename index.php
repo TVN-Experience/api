@@ -65,7 +65,7 @@ Get all Tracking information:<br/>
 https://project.cmi.hr.nl/2016_2017/bcp_mt3b_t2/api/tracking/<br/>
 Method: GET<br/>
 <br/>
-Add a Image:<br/>
+Add a Track:<br/>
 https://project.cmi.hr.nl/2016_2017/bcp_mt3b_t2/api/tracking/<br/>
 Method: POST<br/>
 Parameters:<br/>

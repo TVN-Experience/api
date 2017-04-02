@@ -99,7 +99,7 @@ class DB_Functions {
 
     public function addBeacon($apartment_id, $description)
     {
-        $sql = "INSERT INTO `tvn_apartments` (`apartment_id`, `description`) VALUES ('$apartment_id', '$description')";
+        $sql = "INSERT INTO `tvn_beacons` (`apartment_id`, `description`) VALUES ('$apartment_id', '$description')";
 
         if ($this->conn->query($sql) === TRUE) {
             echo "New record created successfully";
