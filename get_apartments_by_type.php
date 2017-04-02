@@ -5,13 +5,13 @@ $db = new DB_Functions();
 // json response array
 $response = array("error" => FALSE);
 
-if (isset($_GET['id'])) {
+if (isset($_GET['type_id'])) {
 
     // receiving the post params
-    $id = $_GET['id'];
+    $id = $_GET['type_id'];
 
     // get the user by email and password
-    $data = $db->getAppartment($id);
+    $data = $db->getAppartmentsByType($id);
 
     if ($data != false) {
         // use is found

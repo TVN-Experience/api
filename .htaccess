@@ -1,12 +1,22 @@
 <IfModule mod_rewrite.c>
  RewriteEngine on
 
- RewriteRule ^apartment/([0-9]+)$       get_appartment.php?type_id=$1
- RewriteRule ^types/$                   get_types.php
- RewriteRule ^types$                    get_types.php
- RewriteRule ^types/([0-9]+)$           get_type.php?type_id=$1
- RewriteRule ^types/([0-9]+)/$          get_type.php?type_id=$1
- RewriteRule ^types/add/                add_type.php
- RewriteRule ^types/add                 add_type.php
+ RewriteCond %{REQUEST_METHOD} GET
+ RewriteRule ^types/$                       get_types.php
+ RewriteRule ^types$                        get_types.php
+ RewriteRule ^types/([0-9]+)$               get_type.php?type_id=$1
+ RewriteRule ^types/([0-9]+)/$              get_type.php?type_id=$1
+ RewriteRule ^apartments$                   get_apartments.php
+ RewriteRule ^apartments/$                  get_apartments.php
+ RewriteRule ^apartments/type/([0-9]+)$     get_apartments_by_type.php?type_id=$1
+ RewriteRule ^apartments/type/([0-9]+)$/    get_apartments_by_type.php?type_id=$1
+ RewriteRule ^apartments/id/([0-9]+)$       get_apartment.php?id=$1
+ RewriteRule ^apartments/id/([0-9]+)$/      get_apartment.php?id=$1
+
+ RewriteCond %{REQUEST_METHOD} POST
+ RewriteRule ^types/                        add_type.php
+ RewriteRule ^types                         add_type.php
+ RewriteRule ^apartments/                   add_apartment.php
+ RewriteRule ^apartments                    add_apartment.php
 
 </IfModule>

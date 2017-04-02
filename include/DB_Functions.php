@@ -1,17 +1,7 @@
 <?php
 class DB_Functions {
 
-	private $conn,
-			$name = null,
-			$email = null,
-			$password = null,
-			$createdate = null,
-			$updatedate = null,
-			$salt = null,
-			$event_id = null,
-			$timestamp = null,
-			$crownstone = null,
-			$alarm_id = null;
+	private $conn;
 
     // constructor
     function __construct() {
@@ -25,8 +15,6 @@ class DB_Functions {
     function __destruct() {
         
     }
-
-
 
     public function getType($type_id)
     {
@@ -94,32 +82,108 @@ class DB_Functions {
         if ($this->conn->query($sql) === TRUE) {
             echo "New record created successfully";
         } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
+            echo "Error: " . $sql . "<br>" . $this->conn->error;
         }
     }
 
-    public function getAppartment($type_id)
+    public function addApartment($type_id, $measurements, $description, $floors)
+    {
+        $sql = "INSERT INTO `tvn_apartments` (`type_id`, `measurements`, `description`, `floors`) VALUES ($type_id, '$measurements', '$description', '$floors')";
+
+        if ($this->conn->query($sql) === TRUE) {
+            echo "New record created successfully";
+        } else {
+            echo "Error: " . $sql . "<br>" . $this->conn->error;
+        }
+    }
+
+    public function getAppartment($id)
+    {
+        $appartment = null;
+
+        $query = "SELECT id, type_id, measurements, description, floors FROM tvn_apartments WHERE id = '$id'";
+
+        $result = $this->conn->query($query);
+
+        if ($result->num_rows > 0)
+        {
+
+            // output data of each row
+            while($row = $result->fetch_assoc())
+            {
+                $appartment[0]["id"] = $row['id'];
+                $appartment[0]["type_id"] = $row['type_id'];
+                $appartment[0]["measurements"] = $row['measurements'];
+                $appartment[0]["description"] = $row['description'];
+                $appartment[0]["floors"] = $row['floors'];
+            }
+
+            $this->conn->close();
+
+            return $appartment;
+        }
+        else
+        {
+            return NULL;
+        }
+    }
+
+    public function getAppartments()
+    {
+        $appartment = null;
+
+        $query = "SELECT id, type_id, measurements, description, floors FROM tvn_apartments";
+
+        $result = $this->conn->query($query);
+
+        if ($result->num_rows > 0)
+        {
+            $count = 0;
+            // output data of each row
+            while($row = $result->fetch_assoc())
+            {
+                $appartment[$count]["id"] = $row['id'];
+                $appartment[$count]["type_id"] = $row['type_id'];
+                $appartment[$count]["measurements"] = $row['measurements'];
+                $appartment[$count]["description"] = $row['description'];
+                $appartment[$count]["floors"] = $row['floors'];
+                $count++;
+            }
+
+            $this->conn->close();
+
+            return $appartment;
+        }
+        else
+        {
+            return NULL;
+        }
+    }
+
+    public function getAppartmentsByType($type_id)
 	{
 		$appartment = null;
-		
+
 		$query = "SELECT id, type_id, measurements, description, floors FROM tvn_apartments WHERE type_id = '$type_id'";
 
         $result = $this->conn->query($query);
 
-        if ($result->num_rows > 0) 
+        if ($result->num_rows > 0)
 		{
+            $count = 0;
 			// output data of each row
-			while($row = $result->fetch_assoc()) 
+			while($row = $result->fetch_assoc())
 			{
-                $appartment["id"] = $row['id'];
-                $appartment["type_id"] = $row['type_id'];
-                $appartment["measurements"] = $row['measurements'];
-                $appartment["description"] = $row['description'];
-                $appartment["floors"] = $row['floors'];
+                $appartment[$count]["id"] = $row['id'];
+                $appartment[$count]["type_id"] = $row['type_id'];
+                $appartment[$count]["measurements"] = $row['measurements'];
+                $appartment[$count]["description"] = $row['description'];
+                $appartment[$count]["floors"] = $row['floors'];
+                $count++;
 			}
-			
+
 			$this->conn->close();
-			
+
 			return $appartment;
 		}
 		else
@@ -127,163 +191,6 @@ class DB_Functions {
 			return NULL;
 		}
 	}
-	
-	public function getEvents($system_id)
-	{
-		$events = null;
-		
-		$query = "SELECT id, alarm_id, timestamp FROM burguard_events WHERE alarm_id = '$system_id'";
-
-        $result = $this->conn->query($query);
-
-        if ($result->num_rows > 0) 
-		{
-			$count = 0;
-			
-			// output data of each row
-			while($row = $result->fetch_assoc()) 
-			{
-				$events[$count]["id"] = $row['id'];
-				$events[$count]["alarm_id"] = $row['alarm_id'];
-				$events[$count]["timestamp"] = $row['timestamp'];
-				$count++;
-			}
-			
-			$this->conn->close();
-			
-			return $events;
-		}
-		else
-		{
-			return NULL;
-		}
-	}
-	
-    /**
-     * Storing new user
-     * returns user details
-     */
-    public function storeUser($name, $email, $password) {
-        $hash = $this->hashSSHA($password);
-        $encrypted_password = $hash["encrypted"]; // encrypted password
-        $salt = $hash["salt"]; // salt
-
-        $stmt = $this->conn->prepare("INSERT INTO tvn_users(username, password, salt) VALUES(?, ?, ?)");
-        $stmt->bind_param("sssss", $email, $encrypted_password, $salt);
-        $result = $stmt->execute();
-        $stmt->close();
-
-        // check for successful store
-        if ($result) 
-		{
-			$user = "";
-            $stmt = $this->conn->prepare("SELECT username, password, salt FROM tvn_users WHERE username = ?");
-			$stmt->bind_param("s", $email);
-			$stmt->execute();
-			$stmt->bind_result($email, $password, $salt);
-
-			while($stmt->fetch())
-			{
-				$user["name"] = $name;
-				$user["email"] = $email;
-			}
-			
-			$stmt->close();
-	
-			return $user;
-        } 
-		else {
-            return false;
-        }
-    }
-
-    /**
-     * Get user by email and password
-     */
-    public function getUserByEmailAndPassword($email, $password2) {
-
-        $stmt = $this->conn->prepare("SELECT unique_id, name, email, encrypted_password, salt, created_at, updated_at, crownstone_id FROM burguard_users WHERE email = ?");
-
-        $stmt->bind_param("s", $email);
-
-        if ($stmt->execute()) {
-			
-			$stmt->bind_result($uuid, $name, $email, $password, $salt, $createdate, $updatedate, $crownstone);
-			
-			while($stmt->fetch())
-			{
-				$user["name"] = $name;
-				$user["email"] = $email;
-				$user["unique_id"] = $uuid;
-				$user["created_at"] = $createdate;
-				$user["updated_at"] = $updatedate;
-				$user["crownstone_id"] = $crownstone;
-			}
-			
-			$stmt->close();
-
-            // verifying user password
-            $encrypted_password = $password;
-            $hash = $this->checkhashSSHA($salt, $password2);
-            // check for password equality
-            if ($encrypted_password == $hash) {
-                // user authentication details are correct
-                return $user;
-            }
-        } else {
-            return NULL;
-        }
-    }
-
-    /**
-     * Check user is existed or not
-     */
-    public function isUserExisted($email) {
-        $stmt = $this->conn->prepare("SELECT email from burguard_users WHERE email = ?");
-
-        $stmt->bind_param("s", $email);
-
-        $stmt->execute();
-
-        $stmt->store_result();
-
-        if ($stmt->num_rows > 0) {
-            // user existed 
-            $stmt->close();
-            return true;
-        } else {
-            // user not existed
-            $stmt->close();
-            return false;
-        }
-    }
-
-    /**
-     * Encrypting password
-     * @param password
-     * returns salt and encrypted password
-     */
-    public function hashSSHA($password) {
-
-        $salt = sha1(rand());
-        $salt = substr($salt, 0, 10);
-        $encrypted = base64_encode(sha1($password . $salt, true) . $salt);
-        $hash = array("salt" => $salt, "encrypted" => $encrypted);
-        return $hash;
-    }
-
-    /**
-     * Decrypting password
-     * @param salt, password
-     * returns hash string
-     */
-    public function checkhashSSHA($salt, $password) {
-
-        $hash = base64_encode(sha1($password . $salt, true) . $salt);
-
-        return $hash;
-    }
-
 }
 
 ?>
