@@ -86,9 +86,9 @@ class DB_Functions {
         }
     }
 
-    public function addApartment($type_id, $measurements, $description, $floors)
+    public function addApartment($type_id, $measurements, $description, $floors, $price)
     {
-        $sql = "INSERT INTO `tvn_apartments` (`type_id`, `measurements`, `description`, `floors`) VALUES ($type_id, '$measurements', '$description', '$floors')";
+        $sql = "INSERT INTO `tvn_apartments` (`type_id`, `measurements`, `description`, `floors`, `price`) VALUES ($type_id, '$measurements', '$description', '$floors', '$price')";
 
         if ($this->conn->query($sql) === TRUE) {
             echo "New record created successfully";
@@ -158,8 +158,6 @@ class DB_Functions {
             return NULL;
         }
 	}
-
-
 
     public function getTrackings()
     {
@@ -375,5 +373,4 @@ class DB_Functions {
 		}
 	}
 }
-
 ?>
