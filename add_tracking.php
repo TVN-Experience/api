@@ -16,4 +16,3 @@ if (isset($_POST['beacon_id']) && isset($_POST['start_time']) && isset($_POST['e
     $db->addTracking($beacon_id, $start_time, $end_time, $mac_address );
 }
 ?>
-?>

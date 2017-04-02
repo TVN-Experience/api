@@ -110,7 +110,7 @@ class DB_Functions {
 
     public function addImage($uri)
     {
-        $sql = "INSERT INTO `tvn_apartments` (`uri`) VALUES ('$uri')";
+        $sql = "INSERT INTO `tvn_images` (`uri`) VALUES ('$uri')";
 
         if ($this->conn->query($sql) === TRUE) {
             echo "New record created successfully";
@@ -314,6 +314,8 @@ class DB_Functions {
         $query = "SELECT id, type_id, measurements, description, floors, price FROM tvn_apartments";
 
         $result = $this->conn->query($query);
+
+        //var_dump($this->conn);
 
         if ($result->num_rows > 0)
         {
